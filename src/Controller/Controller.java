@@ -12,7 +12,7 @@ public class Controller implements ActionListener {
     private Model model;
 
     public Controller(String s) {
-        this.view = new View();
+        this.view = new View("");
         this.model = new Model();
         setListeners();
     }

@@ -1,6 +1,8 @@
 package View;
 
 import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 
 import javax.swing.*;
 
@@ -18,29 +20,42 @@ public class View extends JFrame {
 		
 		cp = getContentPane();
 		
-		buchungsbetragtxt = new JLabel();
-		kontostandtxt = new JLabel();
-		sachbearbeitertxt = new JLabel();
-		kontonummertxt = new JLabel();
+		buchungsbetragtxt = new JLabel("Buchungsbetrag: ");
+		kontostandtxt = new JLabel("Kontostand: ");
+		sachbearbeitertxt = new JLabel("Sachbearbeiterkürzel: ");
+		kontonummertxt = new JLabel("Kontonummer: ");
 		
-		kontonummer = new JTextField();
-		sachbearbeiter = new JTextField();
-		kontostand = new JTextField();
-		buchungsbetrag = new JTextField();
-		statuszeile = new JTextField();
+		kontonummer = new JTextField(20);
+		sachbearbeiter = new JTextField(20);
+		sachbearbeiter.setEditable(false);
+		kontostand = new JTextField(20);
+		kontostand.setEditable(false);
+		buchungsbetrag = new JTextField(20);
+		buchungsbetrag.setEditable(false);
+		statuszeile = new JTextField(20);
+		statuszeile.setEditable(false);
 		
-		ok = new JButton();
-		abbrechen = new JButton();
+		ok = new JButton("Ok");
+		abbrechen = new JButton("Abbrechen");
 		
 		hauptpanel = new JPanel();
 		nebenpanel = new JPanel();
-		gridpanel = new JPanel();
+		gridpanel = new JPanel(new GridLayout(4, 2));
 		letzespanel = new JPanel();
 		
+		gridpanel.add(kontonummertxt);
+		gridpanel.add(kontonummer);
+		gridpanel.add(sachbearbeitertxt);
+		gridpanel.add(sachbearbeiter);
+		gridpanel.add(buchungsbetragtxt);
+		gridpanel.add(buchungsbetrag);
+		gridpanel.add(kontonummertxt);
+		gridpanel.add(kontonummer);
+		
+		hauptpanel.add(gridpanel);
 		
 		
-		
-		
+		cp.add(hauptpanel);
 		
 		
 		
