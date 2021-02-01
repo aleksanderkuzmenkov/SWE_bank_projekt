@@ -18,12 +18,19 @@ public class Controller implements ActionListener {
     }
 
     private void setListeners() {
-
+        view.getOk().addActionListener(this);
+        view.getAbbrechen().addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getActionCommand().equals(view.getOk().getActionCommand())){
+            System.out.println("Ok");
+        }
 
+        if(e.getActionCommand().equals(view.getAbbrechen().getActionCommand())){
+            System.out.println("Abbrechen");
+        }
     }
 
     public void felderLeeren(){

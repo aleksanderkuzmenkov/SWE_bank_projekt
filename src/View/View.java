@@ -1,8 +1,6 @@
 package View;
 
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.*;
 
 import javax.swing.*;
 
@@ -11,68 +9,105 @@ public class View extends JFrame {
 	private Container cp;
 	private JLabel buchungsbetragtxt, kontostandtxt, sachbearbeitertxt, kontonummertxt;
 	private JTextField kontonummer, sachbearbeiter, kontostand, buchungsbetrag, statuszeile;
-	private JButton ok, abbrechen;
-	private JPanel hauptpanel, nebenpanel, gridpanel, letzespanel;
+	private JButton ok;
+	private JButton abbrechen;
+	private JPanel hauptpanel, nebenpanel, gridpanel, letzespanel, buttonpanel;
 	
 	
 	public View(String s) {
 		super(s);
 		
 		cp = getContentPane();
-		
-		buchungsbetragtxt = new JLabel("Buchungsbetrag: ");
-		kontostandtxt = new JLabel("Kontostand: ");
-		sachbearbeitertxt = new JLabel("Sachbearbeiterkürzel: ");
-		kontonummertxt = new JLabel("Kontonummer: ");
-		
-		kontonummer = new JTextField(20);
-		sachbearbeiter = new JTextField(20);
-		sachbearbeiter.setEditable(false);
-		kontostand = new JTextField(20);
-		kontostand.setEditable(false);
-		buchungsbetrag = new JTextField(20);
-		buchungsbetrag.setEditable(false);
+
+		initializeButtons();
+
+		initializeGridpanel();
+
+		initializeHauptpanel();
+
+		initializeLetzpanel();
+
+		createStatusLine();
+
+		cp.add(letzespanel, BorderLayout.CENTER);
+		cp.add(statuszeile, BorderLayout.SOUTH);
+
+		setproperties();
+
+	}
+
+	private void createStatusLine() {
 		statuszeile = new JTextField(20);
 		statuszeile.setEditable(false);
-		
-		ok = new JButton("Ok");
-		abbrechen = new JButton("Abbrechen");
-		
-		hauptpanel = new JPanel();
-		nebenpanel = new JPanel();
-		gridpanel = new JPanel(new GridLayout(4, 2));
-		letzespanel = new JPanel();
-		
-		gridpanel.add(kontonummertxt);
-		gridpanel.add(kontonummer);
-		gridpanel.add(sachbearbeitertxt);
-		gridpanel.add(sachbearbeiter);
-		gridpanel.add(buchungsbetragtxt);
-		gridpanel.add(buchungsbetrag);
-		gridpanel.add(kontonummertxt);
-		gridpanel.add(kontonummer);
-		
-		hauptpanel.add(gridpanel);
-		
-		
-		cp.add(hauptpanel);
-		
-		
-		
-		
-		
-		setSize(new Dimension(1080,720));
+	}
+
+	private void setproperties() {
+		setSize(new Dimension(500, 700));
 		setVisible(true);
 	}
 
+	private void initializeButtons() {
+		buttonpanel = new JPanel();
+		buttonpanel.setLayout(new FlowLayout());
 
-	
-	
-	
-	
-	
-	
-	
+		ok = new JButton("Ok");
+		abbrechen = new JButton("Abbrechen");
+
+		buttonpanel.add(ok);
+		buttonpanel.add(abbrechen);
+	}
+
+	private void initializeGridpanel() {
+		gridpanel = new JPanel(new GridLayout(4, 2));
+
+		// --- prepare view elements for gridpanel ---
+		buchungsbetragtxt = new JLabel("Buchungsbetrag: ");
+		buchungsbetrag = new JTextField(20);
+		buchungsbetrag.setEditable(false);
+
+		kontostandtxt = new JLabel("Kontostand: ");
+		kontostand = new JTextField(20);
+		kontostand.setEditable(false);
+
+		sachbearbeitertxt = new JLabel("Sachbearbeiterkürzel: ");
+		sachbearbeiter = new JTextField(20);
+		sachbearbeiter.setEditable(false);
+
+		kontonummertxt = new JLabel("Kontonummer: ");
+		kontonummer = new JTextField(20);
+
+		// --- add view elements to gridpanel ---
+		gridpanel.add(kontonummertxt);
+		gridpanel.add(kontonummer);
+
+		gridpanel.add(sachbearbeitertxt);
+		gridpanel.add(sachbearbeiter);
+
+		gridpanel.add(buchungsbetragtxt);
+		gridpanel.add(buchungsbetrag);
+
+		gridpanel.add(kontostandtxt);
+		gridpanel.add(kontostand);
+
+	}
+
+	private void initializeHauptpanel() {
+		hauptpanel = new JPanel();
+
+		hauptpanel.add(gridpanel);
+
+	}
+
+	private void initializeLetzpanel() {
+
+		letzespanel = new JPanel();
+		letzespanel.setLayout(new BoxLayout(letzespanel, BoxLayout.Y_AXIS));
+		letzespanel.add(hauptpanel);
+		letzespanel.add(buttonpanel);
+
+	}
+
+
 	public JTextField getKontonummer() {
 		return kontonummer;
 	}
@@ -131,9 +166,8 @@ public class View extends JFrame {
 	public void setOk(JButton ok) {
 		this.ok = ok;
 	}
-	
-	
-	
-	
-	
+
+	public JButton getAbbrechen() {
+		return abbrechen;
+	}
 }
