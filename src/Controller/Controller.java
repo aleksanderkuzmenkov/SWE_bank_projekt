@@ -30,10 +30,18 @@ public class Controller implements ActionListener {
 
         if(e.getActionCommand().equals(view.getAbbrechen().getActionCommand())){
             System.out.println("Abbrechen");
+
         }
     }
 
     public void felderLeeren(){
+        view.getKontonummer().setText("");
+        view.getSachbearbeiter().setText("");
+        view.getBuchungsbetrag().setText("");
+        view.getBuchungsbetrag().setText("");
+    }
+
+    public void showData(){
 
     }
 }
