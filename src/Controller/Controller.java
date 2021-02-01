@@ -4,6 +4,7 @@ package Controller;
 import Model.Model;
 import View.View;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -25,11 +26,21 @@ public class Controller implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals(view.getOk().getActionCommand())){
-            System.out.println("Ok");
+            if(view.getKontonummer().getText().equals("")){
+                view.getKontonummer().setBackground(Color.RED);
+                view.getStatuszeile().setText("Geben Sie die Kontonummer ein!");
+            }else{
+
+
+
+                System.out.println(view.getKontonummer().getText());
+                view.getKontonummer().setBackground(Color.WHITE);
+                view.getStatuszeile().setText("");
+            }
         }
 
         if(e.getActionCommand().equals(view.getAbbrechen().getActionCommand())){
-            System.out.println("Abbrechen");
+            felderLeeren();
 
         }
     }

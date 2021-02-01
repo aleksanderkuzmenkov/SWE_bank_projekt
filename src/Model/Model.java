@@ -1,11 +1,12 @@
 package Model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Model {
-    private HashMap<String, Sparkonto> sparkonten = new HashMap<String, Sparkonto>();
-    private HashMap<String, Girokonto> girokonten = new HashMap<String, Girokonto>();
+    private ArrayList sparkonten = new ArrayList();
+    private ArrayList girokonten = new ArrayList();
 
     public boolean buchen(double betrag){
 
@@ -16,4 +17,10 @@ public class Model {
 
         return true;
     }
+
+//    public boolean checkIfKontoExist(String kontonummer){
+//        for (int i = 0; i < sparkonten.size() ; i++) {
+//            girokonten.get(i)
+//        }
+//    }
 }
