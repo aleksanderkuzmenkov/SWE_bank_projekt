@@ -8,4 +8,5 @@ public class Girokonto extends Konto{
         super(kontonummer, sachbearbeiter, kontostand, buchungsbetrag, buchungsdatum);
     }
 
+
 }

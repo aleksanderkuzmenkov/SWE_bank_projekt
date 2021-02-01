@@ -75,6 +75,7 @@ public class View extends JFrame {
 
 		kontonummertxt = new JLabel("Kontonummer: ");
 		kontonummer = new JTextField(20);
+		kontonummer.setText(null);
 
 		// --- add view elements to gridpanel ---
 		gridpanel.add(kontonummertxt);
