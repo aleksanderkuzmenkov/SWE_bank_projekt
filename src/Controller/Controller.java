@@ -30,8 +30,15 @@ public class Controller implements ActionListener {
                 view.getKontonummer().setBackground(Color.RED);
                 view.getStatuszeile().setText("Geben Sie die Kontonummer ein!");
             }else{
+                // --- check if konto number exist ---
+                if(!model.checkIfKontoExist(view.getKontonummer().getText())){
+                    // --- if not get error ---
+                    view.getKontonummer().setBackground(Color.RED);
+                    view.getStatuszeile().setText("Die Kontonummer ist flash!");
+                }else{
+                    // --- if exist ---
 
-
+                }
 
                 System.out.println(view.getKontonummer().getText());
                 view.getKontonummer().setBackground(Color.WHITE);
