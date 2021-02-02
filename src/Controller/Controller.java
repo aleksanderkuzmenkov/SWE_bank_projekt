@@ -12,12 +12,22 @@ public class Controller implements ActionListener {
     private View view;
     private Model model;
 
-    public Controller(String s) {
+    /**
+     * Constructor.
+     *
+     * @param title (required) program name.
+     */
+    public Controller(String title) {
         this.view = new View("");
         this.model = new Model();
         setListeners();
     }
 
+    /**
+     * set listeners.
+     *
+     * This method set actionListener on buttons from view.
+     */
     private void setListeners() {
         view.getOk().addActionListener(this);
         view.getAbbrechen().addActionListener(this);
@@ -31,13 +41,13 @@ public class Controller implements ActionListener {
                 view.getStatuszeile().setText("Geben Sie die Kontonummer ein!");
             }else{
                 // --- check if konto number exist ---
-                if(!model.checkIfKontoExist(view.getKontonummer().getText())){
+                if(!model.checkIfAccountExist(view.getKontonummer().getText())){
                     // --- if not get error ---
                     view.getKontonummer().setBackground(Color.RED);
                     view.getStatuszeile().setText("Die Kontonummer ist flash!");
                 }else{
                     // --- if exist ---
-
+                    showData(view.getKontonummer().getText());
                 }
 
                 System.out.println(view.getKontonummer().getText());
@@ -47,19 +57,30 @@ public class Controller implements ActionListener {
         }
 
         if(e.getActionCommand().equals(view.getAbbrechen().getActionCommand())){
-            felderLeeren();
+            emptyFields();
 
         }
     }
 
-    public void felderLeeren(){
+    /**
+     * Empty Fields.
+     *
+     * This method makes all fields of view empty.
+     */
+    public void emptyFields(){
         view.getKontonummer().setText("");
         view.getSachbearbeiter().setText("");
         view.getBuchungsbetrag().setText("");
         view.getBuchungsbetrag().setText("");
     }
 
-    public void showData(){
-
+    /**
+     * Show data.
+     *
+     * This method get all date of an bank account.
+     * @param bankAccountNumber must have content, and must contain correct bank account number.
+     */
+    public void showData(String bankAccountNumber){
+        model.getBankAccountInformation(bankAccountNumber).get(0);
     }
 }
