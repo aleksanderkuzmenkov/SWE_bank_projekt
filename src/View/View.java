@@ -12,8 +12,10 @@ public class View extends JFrame {
 	private JButton ok;
 	private JButton abbrechen;
 	private JPanel hauptpanel, nebenpanel, gridpanel, letzespanel, buttonpanel;
-	
-	
+
+	/**
+	 * Class constructor.
+	 * */
 	public View(String s) {
 		super(s);
 		
