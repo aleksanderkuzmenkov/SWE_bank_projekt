@@ -1,13 +1,17 @@
 package Model;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Model {
 
-    private HashMap<String, CurrentAccount> girokonten = new HashMap<String, CurrentAccount>();
-    private HashMap<String, SavingAccount> sparkonten = new HashMap<String, SavingAccount>();
+    private HashMap<String, CurrentAccount> currentAccounts = new HashMap<String, CurrentAccount>();
+    private HashMap<String, SavingAccount> savingAccounts = new HashMap<String, SavingAccount>();
 
     // --- todo ---
     public boolean debitMoney(double amount){
@@ -44,7 +48,7 @@ public class Model {
      * @param bankAccountNumber must have content, and must contain correct bank account number.
      */
     private boolean checkCurrentAccount(String bankAccountNumber) {
-        for (Map.Entry<String, CurrentAccount> set : girokonten.entrySet()) {
+        for (Map.Entry<String, CurrentAccount> set : currentAccounts.entrySet()) {
             System.out.println(set.getKey() + " = " + set.getValue());
             if(!set.getKey().equals(bankAccountNumber)){
                 return false;
@@ -60,7 +64,7 @@ public class Model {
      * @param bankAccountNumber must have content, and must contain correct bank account number.
      */
     private boolean checkDepositAccount(String bankAccountNumber) {
-        for (Map.Entry<String, SavingAccount> set : sparkonten.entrySet()) {
+        for (Map.Entry<String, SavingAccount> set : savingAccounts.entrySet()) {
             System.out.println(set.getKey() + " = " + set.getValue());
             if(!set.getKey().equals(bankAccountNumber)){
                 return false;
@@ -79,7 +83,7 @@ public class Model {
         ArrayList<BankAccount> bankAccountInformation = new ArrayList();
 
         // --- first for loop for looking for searched bank account ---
-        for (Map.Entry<String, CurrentAccount> set : girokonten.entrySet()) {
+        for (Map.Entry<String, CurrentAccount> set : currentAccounts.entrySet()) {
             System.out.println(set.getKey() + " = " + set.getValue());
             if(set.getKey().equals(bankAccountNumber)){
                bankAccountInformation.add(set.getValue());
@@ -87,7 +91,7 @@ public class Model {
         }
 
         // --- second for loop for looking for searched bank account ---
-        for (Map.Entry<String, SavingAccount> set : sparkonten.entrySet()) {
+        for (Map.Entry<String, SavingAccount> set : savingAccounts.entrySet()) {
             System.out.println(set.getKey() + " = " + set.getValue());
             if(set.getKey().equals(bankAccountNumber)){
                 bankAccountInformation.add(set.getValue());
@@ -97,4 +101,43 @@ public class Model {
         return bankAccountInformation;
     }
 
-}
+    public void addNewCurrentAccount(String bankAccountNumber, String clerk, double bankBalance, double debitAmount, GregorianCalendar debitDate){
+        currentAccounts.put(bankAccountNumber, new CurrentAccount(bankAccountNumber, "clerk", bankBalance, debitAmount, debitDate));
+
+//        System.out.println(currentAccounts.get(bankAccountNumber));
+        try {
+            writeDataToFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addNewSavingAccount(String bankAccountNumber, String clerk, double bankBalance, double debitAmount, GregorianCalendar debitDate){
+        savingAccounts.put(bankAccountNumber, new SavingAccount(bankAccountNumber, clerk, bankBalance, debitAmount, debitDate));
+        try {
+            writeDataToFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void writeDataToFile()
+        throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter("Test"));
+
+        for (Map.Entry<String, CurrentAccount> set : currentAccounts.entrySet()) {
+            writer.newLine();
+            writer.write("Kontonummer: " + set.getValue().getBankAccountNumber());
+            writer.newLine();
+            writer.write("Sachbearbeiter: " +  set.getValue().getClerk());
+            writer.newLine();
+            writer.write("Kontostand: " + String.valueOf(set.getValue().getBankBalance()));
+            writer.newLine();
+        }
+
+            writer.write("-----------------------------------------");
+
+            writer.close();
+        }
+    }

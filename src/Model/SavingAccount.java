@@ -24,4 +24,12 @@ public class SavingAccount extends BankAccount {
     public SavingAccount(String bankAccountNumber, String clerk, double bankBalance, double debitAmount, GregorianCalendar debitDate) {
         super(bankAccountNumber, clerk, bankBalance, debitAmount, debitDate);
     }
+
+    private boolean checkIfBankBalanceNotNeganive(double bankBalance){
+        if (bankBalance <= 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }
