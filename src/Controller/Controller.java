@@ -7,6 +7,7 @@ import View.View;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class Controller implements ActionListener {
     private View view;
@@ -18,7 +19,7 @@ public class Controller implements ActionListener {
      * @param title (required) program name.
      */
     public Controller(String title) {
-        this.view = new View("");
+        this.view = new View(title);
         this.model = new Model();
         setListeners();
     }
@@ -29,34 +30,34 @@ public class Controller implements ActionListener {
      * This method set actionListener on buttons from view.
      */
     private void setListeners() {
-        view.getOk().addActionListener(this);
-        view.getAbbrechen().addActionListener(this);
+        view.getOkayButton().addActionListener(this);
+        view.getAbortButton().addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals(view.getOk().getActionCommand())){
-            if(view.getKontonummer().getText().equals("")){
-                view.getKontonummer().setBackground(Color.RED);
-                view.getStatuszeile().setText("Geben Sie die Kontonummer ein!");
+        if (e.getActionCommand().equals(view.getOkayButton().getActionCommand())){
+            if(view.getBankAccountNumber().getText().equals("")){
+                view.getBankAccountNumber().setBackground(Color.RED);
+                view.getStatusLine().setText("Geben Sie die Kontonummer ein!");
             }else{
                 // --- check if konto number exist ---
-                if(!model.checkIfAccountExist(view.getKontonummer().getText())){
+                if(!model.checkIfAccountExist(view.getBankAccountNumber().getText())){
                     // --- if not get error ---
-                    view.getKontonummer().setBackground(Color.RED);
-                    view.getStatuszeile().setText("Die Kontonummer ist flash!");
+                    view.getBankAccountNumber().setBackground(Color.RED);
+                    view.getStatusLine().setText("Die Kontonummer ist falsch!");
                 }else{
                     // --- if exist ---
-                    showData(view.getKontonummer().getText());
+                    showData(view.getBankAccountNumber().getText());
                 }
 
-                System.out.println(view.getKontonummer().getText());
-                view.getKontonummer().setBackground(Color.WHITE);
-                view.getStatuszeile().setText("");
+                System.out.println(view.getBankAccountNumber().getText());
+                view.getBankAccountNumber().setBackground(Color.WHITE);
+                view.getStatusLine().setText("");
             }
         }
 
-        if(e.getActionCommand().equals(view.getAbbrechen().getActionCommand())){
+        if(e.getActionCommand().equals(view.getAbortButton().getActionCommand())){
             emptyFields();
 
         }
@@ -68,10 +69,10 @@ public class Controller implements ActionListener {
      * This method makes all fields of view empty.
      */
     public void emptyFields(){
-        view.getKontonummer().setText("");
-        view.getSachbearbeiter().setText("");
-        view.getBuchungsbetrag().setText("");
-        view.getBuchungsbetrag().setText("");
+        view.getBankAccountNumber().setText("");
+        view.getClear().setText("");
+        view.getDebitAmount().setText("");
+        view.getDebitAmount().setText("");
     }
 
     /**

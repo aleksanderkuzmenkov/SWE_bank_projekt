@@ -7,17 +7,29 @@ import javax.swing.*;
 public class View extends JFrame {
 	
 	private Container cp;
-	private JLabel buchungsbetragtxt, kontostandtxt, sachbearbeitertxt, kontonummertxt;
-	private JTextField kontonummer, sachbearbeiter, kontostand, buchungsbetrag, statuszeile;
-	private JButton ok;
-	private JButton abbrechen;
+
+	private JLabel debitAmountTxt = new JLabel("Buchungsbetrag: ");
+	private JLabel bankBalanceTxt;
+	private JLabel clearTxt;
+	private JLabel bankAccountNumberTxt;
+
+	private JTextField bankAccountNumber;
+	private JTextField clear;
+	private JTextField bankBalance;
+	private JTextField debitAmount;
+	private JTextField statusLine;
+
+	private JButton okayButton;
+	private JButton abortButton;
 	private JPanel hauptpanel, nebenpanel, gridpanel, letzespanel, buttonpanel;
 
 	/**
-	 * Class constructor.
-	 * */
-	public View(String s) {
-		super(s);
+	 * Constructor.
+	 *
+	 * @param title (required) program name.
+	 */
+	public View(String title) {
+		super(title);
 		
 		cp = getContentPane();
 
@@ -32,15 +44,15 @@ public class View extends JFrame {
 		createStatusLine();
 
 		cp.add(letzespanel, BorderLayout.CENTER);
-		cp.add(statuszeile, BorderLayout.SOUTH);
+		cp.add(statusLine, BorderLayout.SOUTH);
 
 		setproperties();
 
 	}
 
 	private void createStatusLine() {
-		statuszeile = new JTextField(20);
-		statuszeile.setEditable(false);
+		statusLine = new JTextField(20);
+		statusLine.setEditable(false);
 	}
 
 	private void setproperties() {
@@ -52,45 +64,44 @@ public class View extends JFrame {
 		buttonpanel = new JPanel();
 		buttonpanel.setLayout(new FlowLayout());
 
-		ok = new JButton("Ok");
-		abbrechen = new JButton("Abbrechen");
+		okayButton = new JButton("Ok");
+		abortButton = new JButton("Abbrechen");
 
-		buttonpanel.add(ok);
-		buttonpanel.add(abbrechen);
+		buttonpanel.add(okayButton);
+		buttonpanel.add(abortButton);
 	}
 
 	private void initializeGridpanel() {
 		gridpanel = new JPanel(new GridLayout(4, 2));
 
 		// --- prepare view elements for gridpanel ---
-		buchungsbetragtxt = new JLabel("Buchungsbetrag: ");
-		buchungsbetrag = new JTextField(20);
-		buchungsbetrag.setEditable(false);
+		debitAmount = new JTextField(20);
+		debitAmount.setEditable(false);
 
-		kontostandtxt = new JLabel("Kontostand: ");
-		kontostand = new JTextField(20);
-		kontostand.setEditable(false);
+		bankBalanceTxt = new JLabel("Kontostand: ");
+		bankBalance = new JTextField(20);
+		bankBalance.setEditable(false);
 
-		sachbearbeitertxt = new JLabel("Sachbearbeiterkürzel: ");
-		sachbearbeiter = new JTextField(20);
-		sachbearbeiter.setEditable(false);
+		clearTxt = new JLabel("Sachbearbeiterkürzel: ");
+		clear = new JTextField(20);
+		clear.setEditable(false);
 
-		kontonummertxt = new JLabel("Kontonummer: ");
-		kontonummer = new JTextField(20);
-		kontonummer.setText(null);
+		bankAccountNumberTxt = new JLabel("Kontonummer: ");
+		bankAccountNumber = new JTextField(20);
+		bankAccountNumber.setText(null);
 
 		// --- add view elements to gridpanel ---
-		gridpanel.add(kontonummertxt);
-		gridpanel.add(kontonummer);
+		gridpanel.add(bankAccountNumberTxt);
+		gridpanel.add(bankAccountNumber);
 
-		gridpanel.add(sachbearbeitertxt);
-		gridpanel.add(sachbearbeiter);
+		gridpanel.add(clearTxt);
+		gridpanel.add(clear);
 
-		gridpanel.add(buchungsbetragtxt);
-		gridpanel.add(buchungsbetrag);
+		gridpanel.add(debitAmountTxt);
+		gridpanel.add(debitAmount);
 
-		gridpanel.add(kontostandtxt);
-		gridpanel.add(kontostand);
+		gridpanel.add(bankBalanceTxt);
+		gridpanel.add(bankBalance);
 
 	}
 
@@ -111,66 +122,66 @@ public class View extends JFrame {
 	}
 
 
-	public JTextField getKontonummer() {
-		return kontonummer;
+	public JTextField getBankAccountNumber() {
+		return bankAccountNumber;
 	}
 
 
-	public void setKontonummer(JTextField kontonummer) {
-		this.kontonummer = kontonummer;
+	public void setBankAccountNumber(JTextField bankAccountNumber) {
+		this.bankAccountNumber = bankAccountNumber;
 	}
 
 
-	public JTextField getSachbearbeiter() {
-		return sachbearbeiter;
+	public JTextField getClear() {
+		return clear;
 	}
 
 
-	public void setSachbearbeiter(JTextField sachbearbeiter) {
-		this.sachbearbeiter = sachbearbeiter;
+	public void setClear(JTextField clear) {
+		this.clear = clear;
 	}
 
 
-	public JTextField getKontostand() {
-		return kontostand;
+	public JTextField getBankBalance() {
+		return bankBalance;
 	}
 
 
-	public void setKontostand(JTextField kontostand) {
-		this.kontostand = kontostand;
+	public void setBankBalance(JTextField bankBalance) {
+		this.bankBalance = bankBalance;
 	}
 
 
-	public JTextField getBuchungsbetrag() {
-		return buchungsbetrag;
+	public JTextField getDebitAmount() {
+		return debitAmount;
 	}
 
 
-	public void setBuchungsbetrag(JTextField buchungsbetrag) {
-		this.buchungsbetrag = buchungsbetrag;
+	public void setDebitAmount(JTextField debitAmount) {
+		this.debitAmount = debitAmount;
 	}
 
 
-	public JTextField getStatuszeile() {
-		return statuszeile;
+	public JTextField getStatusLine() {
+		return statusLine;
 	}
 
 
-	public void setStatuszeile(JTextField statuszeile) {
-		this.statuszeile = statuszeile;
+	public void setStatusLine(JTextField statusLine) {
+		this.statusLine = statusLine;
 	}
 
 
-	public JButton getOk() {
-		return ok;
+	public JButton getOkayButton() {
+		return okayButton;
 	}
 
 
-	public void setOk(JButton ok) {
-		this.ok = ok;
+	public void setOkayButton(JButton okayButton) {
+		this.okayButton = okayButton;
 	}
 
-	public JButton getAbbrechen() {
-		return abbrechen;
+	public JButton getAbortButton() {
+		return abortButton;
 	}
 }
