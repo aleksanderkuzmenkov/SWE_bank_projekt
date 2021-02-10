@@ -22,6 +22,7 @@ public class Controller implements ActionListener {
         this.view = new View(title);
         this.model = new Model();
         setListeners();
+        model.generateBankAccountID();
     }
 
     /**

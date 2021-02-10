@@ -1,8 +1,6 @@
 package Model;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -12,6 +10,7 @@ public class Model {
 
     private HashMap<String, CurrentAccount> currentAccounts = new HashMap<String, CurrentAccount>();
     private HashMap<String, SavingAccount> savingAccounts = new HashMap<String, SavingAccount>();
+    private final String FILE_NAME = "BankAccounts.txt";
 
     // --- todo ---
     public boolean debitMoney(double amount){
@@ -82,7 +81,7 @@ public class Model {
     public ArrayList getBankAccountInformation(String bankAccountNumber){
         ArrayList<BankAccount> bankAccountInformation = new ArrayList();
 
-        // --- first for loop for looking for searched bank account ---
+        // --- first loop for looking for searched bank account ---
         for (Map.Entry<String, CurrentAccount> set : currentAccounts.entrySet()) {
             System.out.println(set.getKey() + " = " + set.getValue());
             if(set.getKey().equals(bankAccountNumber)){
@@ -90,7 +89,7 @@ public class Model {
             }
         }
 
-        // --- second for loop for looking for searched bank account ---
+        // --- second loop for looking for searched bank account ---
         for (Map.Entry<String, SavingAccount> set : savingAccounts.entrySet()) {
             System.out.println(set.getKey() + " = " + set.getValue());
             if(set.getKey().equals(bankAccountNumber)){
@@ -100,11 +99,19 @@ public class Model {
 
         return bankAccountInformation;
     }
-
+    /**
+     * Add new current bank account.
+     *
+     * This method adds new current account to current account list.
+     * @param bankAccountNumber must have content, and must contain correct bank account number.
+     * @param clerk must have content, and must contain correct bank account number.
+     * @param bankBalance must have content, and must contain correct bank account number.
+     * @param debitAmount must have content, and must contain correct bank account number.
+     * @param debitDate must have content, and must contain correct bank account number.
+     */
     public void addNewCurrentAccount(String bankAccountNumber, String clerk, double bankBalance, double debitAmount, GregorianCalendar debitDate){
         currentAccounts.put(bankAccountNumber, new CurrentAccount(bankAccountNumber, "clerk", bankBalance, debitAmount, debitDate));
 
-//        System.out.println(currentAccounts.get(bankAccountNumber));
         try {
             writeDataToFile();
         } catch (IOException e) {
@@ -119,25 +126,68 @@ public class Model {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
-    public void writeDataToFile()
-        throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter("Test"));
+    /**
+     * Write Data to File.
+     *
+     * This method write all bank accounts information to BankAccounts.txt file.
+     * Bank account in file will be separate to current and Saving accounts.
+     * Avery line get an lineId;
+     */
+    public void writeDataToFile() throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME));
 
+        int lineId = 1;
+        writer.write("==================== Current Accounts ==================== ");
+        writer.newLine();
         for (Map.Entry<String, CurrentAccount> set : currentAccounts.entrySet()) {
-            writer.newLine();
-            writer.write("Kontonummer: " + set.getValue().getBankAccountNumber());
-            writer.newLine();
-            writer.write("Sachbearbeiter: " +  set.getValue().getClerk());
-            writer.newLine();
-            writer.write("Kontostand: " + String.valueOf(set.getValue().getBankBalance()));
+            writer.write(
+                    lineId++ + ";" +
+                        set.getValue().getBankAccountNumber() + ";" +
+                        set.getValue().getClerk()  + ";" +
+                        set.getValue().getBankBalance()
+            );
             writer.newLine();
         }
-
-            writer.write("-----------------------------------------");
-
-            writer.close();
+        writer.write("==================== Current Accounts ==================== ");
+        writer.newLine();
+        for (Map.Entry<String, SavingAccount> set : savingAccounts.entrySet()) {
+            writer.write(
+                    lineId++ + ";" +
+                        set.getValue().getBankAccountNumber() + ";" +
+                        set.getValue().getClerk()  + ";" +
+                        set.getValue().getBankBalance()
+            );
+            writer.newLine();
         }
+        writer.close();
     }
+
+    public String generateBankAccountID(){
+
+        try(BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))){
+
+            String line;
+
+            // --- TODO what is () ---
+            while ((line = reader.readLine()) != null){
+                System.out.println(line + "\n");
+                int c;
+                while((c=reader.read()) != -1){
+                    System.out.println(c);
+                }
+
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
+}
