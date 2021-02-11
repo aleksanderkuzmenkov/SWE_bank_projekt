@@ -50,6 +50,7 @@ public class Controller implements ActionListener {
                 }else{
                     // --- if exist ---
                     showData(view.getBankAccountNumber().getText());
+                    view.getOkayButton().setText("Buchen");
                 }
 
                 System.out.println(view.getBankAccountNumber().getText());

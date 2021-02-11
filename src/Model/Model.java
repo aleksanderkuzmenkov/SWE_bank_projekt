@@ -1,11 +1,16 @@
 package Model;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
+/**
+ * The Model class
+ * and methods of abstract class BankAccount
+ *
+ * @author  Oleksandr Kuzmenkov
+ * @version 2.0
+ * @since   2021-01-26
+ */
 public class Model {
 
     private HashMap<String, CurrentAccount> currentAccounts = new HashMap<String, CurrentAccount>();
@@ -119,6 +124,16 @@ public class Model {
         }
     }
 
+    /**
+     * Add new saving bank account.
+     *
+     * This method adds new saving account to saving account list.
+     * @param bankAccountNumber must have content, and must contain correct bank account number.
+     * @param clerk must have content, and must contain correct bank account number.
+     * @param bankBalance must have content, and must contain correct bank account number.
+     * @param debitAmount must have content, and must contain correct bank account number.
+     * @param debitDate must have content, and must contain correct bank account number.
+     */
     public void addNewSavingAccount(String bankAccountNumber, String clerk, double bankBalance, double debitAmount, GregorianCalendar debitDate){
         savingAccounts.put(bankAccountNumber, new SavingAccount(bankAccountNumber, clerk, bankBalance, debitAmount, debitDate));
         try {
@@ -139,8 +154,7 @@ public class Model {
         BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME));
 
         int lineId = 1;
-        writer.write("==================== Current Accounts ==================== ");
-        writer.newLine();
+
         for (Map.Entry<String, CurrentAccount> set : currentAccounts.entrySet()) {
             writer.write(
                     lineId++ + ";" +
@@ -150,8 +164,7 @@ public class Model {
             );
             writer.newLine();
         }
-        writer.write("==================== Current Accounts ==================== ");
-        writer.newLine();
+
         for (Map.Entry<String, SavingAccount> set : savingAccounts.entrySet()) {
             writer.write(
                     lineId++ + ";" +
@@ -162,23 +175,40 @@ public class Model {
             writer.newLine();
         }
         writer.close();
+
+
     }
 
     public String generateBankAccountID(){
 
+        ArrayList<Integer> idNrs = new ArrayList<>();
+
         try(BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))){
 
-            String line;
+            String line = reader.readLine();
 
-            // --- TODO what is () ---
-            while ((line = reader.readLine()) != null){
-                System.out.println(line + "\n");
-                int c;
-                while((c=reader.read()) != -1){
-                    System.out.println(c);
+            String test = "";
+            boolean helper = true;
+            int counter = 0;
+
+            while ((line = reader.readLine()) != null) {
+                while (helper) {
+                    if (!String.valueOf(line.charAt(counter)).equals(";")) {
+                        test = test + line.charAt(counter);
+                        counter++;
+                    } else {
+                        System.out.println(test);
+                        counter = 0;
+                        idNrs.add(Integer.parseInt(test));
+                        test = "";
+                        helper = false;
+                    }
                 }
-
+                helper = true;
             }
+
+             Collections.sort(idNrs);
+
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -186,6 +216,8 @@ public class Model {
             e.printStackTrace();
         }
 
+        // --- TODO ---
+//        return String.valueOf(idNrs.get(idNrs.size()-1));
         return null;
     }
 

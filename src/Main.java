@@ -19,6 +19,8 @@ public class Main {
 		model.addNewSavingAccount("s352", "Max Mustermann", 550, 20, new GregorianCalendar());
 		model.addNewSavingAccount("s353", "Max Mustermann", 550, 20, new GregorianCalendar());
 		model.addNewSavingAccount("s354", "Max Mustermann", 550, 20, new GregorianCalendar());
+		model.addNewSavingAccount("s355", "Max Mustermann", 550, 20, new GregorianCalendar());
+		model.addNewSavingAccount("s356", "Max Mustermann", 550, 20, new GregorianCalendar());
 
 		Controller controller = new Controller("Bank Program");
 
