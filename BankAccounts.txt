@@ -1,11 +1,1 @@
-==================== Current Accounts ==================== 
-1;c352;clerk;550.0
-2;c351;clerk;550.0
-3;c353;clerk;550.0
-4;c350;clerk;550.0
-==================== Current Accounts ==================== 
-5;s352;Max Mustermann;550.0
-6;s351;Max Mustermann;550.0
-7;s354;Max Mustermann;550.0
-8;s353;Max Mustermann;550.0
-9;s350;Max Mustermann;550.0
+1;c350;clerk;550.0
