@@ -115,13 +115,11 @@ public class Model {
      * @param debitDate must have content, and must contain correct bank account number.
      */
     public void addNewCurrentAccount(String bankAccountNumber, String clerk, double bankBalance, double debitAmount, GregorianCalendar debitDate){
-        currentAccounts.put(bankAccountNumber, new CurrentAccount(bankAccountNumber, "clerk", bankBalance, debitAmount, debitDate));
 
-        try {
-            writeDataToFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String bankAccountId = "C" + generateBankAccountID();
+        currentAccounts.put(bankAccountId, new CurrentAccount(bankAccountNumber, "clerk", bankBalance, debitAmount, debitDate));
+
+        writeDataToFile(bankAccountId, clerk, bankBalance, debitAmount, debitDate);
     }
 
     /**
@@ -135,12 +133,9 @@ public class Model {
      * @param debitDate must have content, and must contain correct bank account number.
      */
     public void addNewSavingAccount(String bankAccountNumber, String clerk, double bankBalance, double debitAmount, GregorianCalendar debitDate){
-        savingAccounts.put(bankAccountNumber, new SavingAccount(bankAccountNumber, clerk, bankBalance, debitAmount, debitDate));
-        try {
-            writeDataToFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String bankAccountId = "C"+generateBankAccountID();
+        savingAccounts.put(bankAccountId, new SavingAccount(bankAccountNumber, clerk, bankBalance, debitAmount, debitDate));
+        writeDataToFile(bankAccountId, clerk, bankBalance, debitAmount, debitDate);
     }
 
     /**
@@ -150,36 +145,60 @@ public class Model {
      * Bank account in file will be separate to current and Saving accounts.
      * Avery line get an lineId;
      */
-    public void writeDataToFile() throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME));
+    private void writeDataToFile(String bankAccountId, String clerk, double bankBalance, double debitAmount, GregorianCalendar debitDate) {
+        File file = new File(FILE_NAME);
+        FileWriter fr = null;
+        BufferedWriter br = null;
+        try {
+            //для обновления файла нужно инициализировать FileWriter с помощью этого конструктора
+            fr = new FileWriter(file,true);
+            br = new BufferedWriter(fr);
 
-        int lineId = 1;
+            int lineId = 1;
 
-        for (Map.Entry<String, CurrentAccount> set : currentAccounts.entrySet()) {
-            writer.write(
-                    lineId++ + ";" +
-                        set.getValue().getBankAccountNumber() + ";" +
-                        set.getValue().getClerk()  + ";" +
-                        set.getValue().getBankBalance()
-            );
-            writer.newLine();
+            br.write(bankAccountId + ";");
+            br.write(clerk + ";");
+            br.write(bankBalance + ";");
+            br.write(debitAmount + ";");
+            br.write(debitDate + ";");
+
+            br.close();
+
+//            for (Map.Entry<String, CurrentAccount> set : currentAccounts.entrySet()) {
+//                br.write(
+//                        lineId++ + ";" +
+//                                set.getValue().getBankAccountNumber() + ";" +
+//                                set.getValue().getClerk()  + ";" +
+//                                set.getValue().getBankBalance()
+//                );
+//                br.newLine();
+//            }
+//            for (Map.Entry<String, SavingAccount> set : savingAccounts.entrySet()) {
+//                br.write(
+//                        lineId++ + ";" +
+//                                set.getValue().getBankAccountNumber() + ";" +
+//                                set.getValue().getClerk()  + ";" +
+//                                set.getValue().getBankBalance()
+//                );
+//                br.newLine();
+//            }
+//            br.close();
+
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally{
+            try {
+                br.close();
+                fr.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-
-        for (Map.Entry<String, SavingAccount> set : savingAccounts.entrySet()) {
-            writer.write(
-                    lineId++ + ";" +
-                        set.getValue().getBankAccountNumber() + ";" +
-                        set.getValue().getClerk()  + ";" +
-                        set.getValue().getBankBalance()
-            );
-            writer.newLine();
-        }
-        writer.close();
-
-
     }
 
-    public String generateBankAccountID(){
+    public int generateBankAccountID(){
 
         ArrayList<Integer> idNrs = new ArrayList<>();
 
@@ -217,9 +236,7 @@ public class Model {
         }
 
         // --- TODO ---
-//        return String.valueOf(idNrs.get(idNrs.size()-1));
-        return null;
+        return idNrs.get(idNrs.size()-1);
+//        return null;
     }
-
-
 }
