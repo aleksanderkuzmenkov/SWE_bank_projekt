@@ -49,8 +49,6 @@ public class Controller implements ActionListener {
                     view.getStatusLine().setText("Die Kontonummer ist falsch!");
                 }else{
                     clickCounter = true;
-
-                    System.out.println("1.///");
                         // --- if exist ---
                         showData(view.getBankAccountNumber().getText());
                         view.getDebitAmount().setEditable(true);
@@ -60,6 +58,7 @@ public class Controller implements ActionListener {
                         if(!view.getDebitAmount().getText().equals("")) {
                             if(model.debitMoney(view.getBankAccountNumber().getText(), Double.parseDouble(view.getDebitAmount().getText()))){
                                 view.getStatusLine().setText("Betrag wird gebucht");
+                                showData(view.getBankAccountNumber().getText());
                             }else {
                                 view.getStatusLine().setText("Falsches Betrag");
                             }
@@ -67,7 +66,6 @@ public class Controller implements ActionListener {
                             view.getStatusLine().setText("Buchungsbetrag darf nicht lehr sein!");
                         }
                     }
-
                 }
                 view.getBankAccountNumber().setBackground(Color.WHITE);
                 view.getStatusLine().setText("");
@@ -100,11 +98,17 @@ public class Controller implements ActionListener {
      * @param bankAccountNumber must have content, and must contain correct bank account number.
      */
     public void showData(String bankAccountNumber){
-
         setDataOnView(model.getBankAccountInformation(bankAccountNumber)[0], model.getBankAccountInformation(bankAccountNumber)[1], model.getBankAccountInformation(bankAccountNumber)[2]);
-
     }
 
+    /**
+     * Show data.
+     *
+     * This method get all date of an bank account.
+     * @param accountNumber must have content, and must contain correct bank account number.
+     * @param clerk must have content, and must contain correct bank account number.
+     * @param balance must have content, and must contain correct bank account number.
+     */
     private void setDataOnView(String accountNumber, String clerk, String balance) {
         view.getBankAccountNumber().setText(accountNumber);
         view.getClerk().setText(clerk);

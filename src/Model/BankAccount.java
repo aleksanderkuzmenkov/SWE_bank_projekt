@@ -82,4 +82,8 @@ public abstract class BankAccount {
     public GregorianCalendar getDebitDate() {
         return debitDate;
     }
+
+    public void setDebitDate(GregorianCalendar debitDate) {
+        this.debitDate = debitDate;
+    }
 }
