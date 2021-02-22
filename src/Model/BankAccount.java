@@ -11,6 +11,7 @@ import java.util.GregorianCalendar;
  * @since   2021-01-26
  */
 public abstract class BankAccount {
+    private int bankAccountID;
     private String bankAccountNumber;
     private String clerk;
     private double bankBalance;
@@ -20,18 +21,16 @@ public abstract class BankAccount {
     /**
      * Constructor.
      *
+     * @param bankAccountID
      * @param bankAccountNumber (required) bank account number. Will be automatically generated.
      * @param clerk (required) bank clerk name. Must have content.
      * @param bankBalance (required) show current balance of bank account.
-     * @param debitAmount (required) show value of a debit.
-     * @param DebitDate (required) date of debit. Will be automatically generated.
      */
-    public BankAccount(String bankAccountNumber, String clerk, double bankBalance, double debitAmount, GregorianCalendar DebitDate) {
+    public BankAccount(int bankAccountID, String bankAccountNumber, String clerk, double bankBalance) {
+        this.bankAccountID = bankAccountID;
         this.bankAccountNumber = bankAccountNumber;
         this.clerk = clerk;
         this.bankBalance = bankBalance;
-        this.debitAmount = debitAmount;
-        this.debitDate = DebitDate;
     }
 
     /**

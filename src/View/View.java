@@ -14,7 +14,7 @@ public class View extends JFrame {
 	private JLabel bankAccountNumberTxt;
 
 	private JTextField bankAccountNumber;
-	private JTextField clear;
+	private JTextField clerk;
 	private JTextField bankBalance;
 	private JTextField debitAmount;
 	private JTextField statusLine;
@@ -83,8 +83,8 @@ public class View extends JFrame {
 		bankBalance.setEditable(false);
 
 		clearTxt = new JLabel("Sachbearbeiterkürzel: ");
-		clear = new JTextField(20);
-		clear.setEditable(false);
+		clerk = new JTextField(20);
+		clerk.setEditable(false);
 
 		bankAccountNumberTxt = new JLabel("Kontonummer: ");
 		bankAccountNumber = new JTextField(20);
@@ -95,7 +95,7 @@ public class View extends JFrame {
 		gridpanel.add(bankAccountNumber);
 
 		gridpanel.add(clearTxt);
-		gridpanel.add(clear);
+		gridpanel.add(clerk);
 
 		gridpanel.add(debitAmountTxt);
 		gridpanel.add(debitAmount);
@@ -132,13 +132,13 @@ public class View extends JFrame {
 	}
 
 
-	public JTextField getClear() {
-		return clear;
+	public JTextField getClerk() {
+		return clerk;
 	}
 
 
-	public void setClear(JTextField clear) {
-		this.clear = clear;
+	public void setClerk(JTextField clerk) {
+		this.clerk = clerk;
 	}
 
 
@@ -184,4 +184,6 @@ public class View extends JFrame {
 	public JButton getAbortButton() {
 		return abortButton;
 	}
+
+
 }

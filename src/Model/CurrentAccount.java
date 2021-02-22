@@ -18,10 +18,9 @@ public class CurrentAccount extends BankAccount {
      * @param bankAccountNumber (required) bank account number. Will be automatically generated.
      * @param clerk (required) bank clerk name. Must have content.
      * @param bankBalance (required) show current balance of bank account. Can be negative.
-     * @param debitAmount (required) show value of a debit. Can be more than bank balance.
-     * @param debitDate (required) date of debit. Will be automatically generated.
+
      */
-    public CurrentAccount(String bankAccountNumber, String clerk, double bankBalance, double debitAmount, GregorianCalendar debitDate) {
-        super(bankAccountNumber, clerk, bankBalance, debitAmount, debitDate);
+    public CurrentAccount(int bankAccountID, String bankAccountNumber, String clerk, double bankBalance) {
+        super(bankAccountID, bankAccountNumber, clerk, bankBalance);
     }
 }
