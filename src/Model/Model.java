@@ -1,6 +1,7 @@
 package Model;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -23,6 +24,7 @@ public class Model {
         if(bankNumber.charAt(0) == 'C'){
             // --- is an current bank account, JUST DU IT ---
             currentAccounts.get(bankNumber).setBankBalance(currentAccounts.get(bankNumber).getBankBalance() - amount);
+            currentAccounts.get(bankNumber).setDebitDate(new GregorianCalendar());
 
             rewriteBankAccountInformation();
 
@@ -31,6 +33,8 @@ public class Model {
             // --- is an saving bank account. Check if enough money ----
             if(checkAmount(amount, savingAccounts.get(bankNumber).getBankBalance())){
                 savingAccounts.get(bankNumber).setBankBalance(savingAccounts.get(bankNumber).getBankBalance() - amount);
+                savingAccounts.get(bankNumber).setDebitDate(new GregorianCalendar());
+
                 rewriteBankAccountInformation();
                 // --- return error code for true ---
                 return true;
@@ -39,6 +43,17 @@ public class Model {
                 return false;
             }
         }
+    }
+
+    public String convertDate(GregorianCalendar gregorianCalendarDate) {
+        // Creating an object of SimpleDateFormat
+        SimpleDateFormat formattedDate = new SimpleDateFormat("dd-MMM-yyyy");
+
+        String dateFormatted
+                = formattedDate.format(
+                gregorianCalendarDate.getTime());
+
+        return dateFormatted;
     }
 
     public boolean checkAmount(double amount, double bankAccountBalance){
@@ -147,7 +162,7 @@ public class Model {
      */
     public void addNewCurrentAccount(int bankAccountID, String bankAccountNumber, String clerk, double bankBalance){
 
-        currentAccounts.put(bankAccountNumber, new CurrentAccount(bankAccountID, bankAccountNumber, "clerk", bankBalance));
+        currentAccounts.put(bankAccountNumber, new CurrentAccount(bankAccountID, bankAccountNumber, clerk, bankBalance));
 
 //        writeDataToFile(bankAccountID, bankAccountNumber, clerk, bankBalance);
     }
@@ -220,8 +235,7 @@ public class Model {
     /**
      * Generate Bank Account ID.
      *
-     * This method write all bank accounts information to BankAccounts.txt file.
-     * Bank account in file will be separate to current and Saving accounts.
+     * This generate a new id for bank accounts list.
      * Avery line get an lineId;
      * @return idNrs.get(idNrs.size()-1)
      */
@@ -232,21 +246,15 @@ public class Model {
         try(BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))){
 
             String line = null;
-
-            String[] split = new String[4];
+            String[] split = new String[5];
 
             while ((line = reader.readLine()) != null) {
-
                 split = line.split(";");
-
                 splitToBankAccountTypes(split);
-
                 idNrs.add(Integer.parseInt(split[0]));
-
             }
 
             Collections.sort(idNrs);
-
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -257,6 +265,13 @@ public class Model {
         return idNrs.get(idNrs.size()-1);
     }
 
+    /**
+     * splitToBankAccountTypes
+     *
+     * This generate a new id for bank accounts list.
+     * Avery line get an lineId;
+     * @return idNrs.get(idNrs.size()-1)
+     */
     private void splitToBankAccountTypes(String[] split) {
         if (split[1].charAt(0) == 'C'){
             addNewCurrentAccount(Integer.parseInt(split[0]), split[1], split[2], Double.parseDouble(split[3]));

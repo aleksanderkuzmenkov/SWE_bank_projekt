@@ -21,7 +21,7 @@ public class View extends JFrame {
 
 	private JButton okayButton;
 	private JButton abortButton;
-	private JPanel hauptpanel, nebenpanel, gridpanel, letzespanel, buttonpanel;
+	private JPanel hauptpanel, nebenpanel, gridpanel, letzespanel, buttonpanel, lastPanel;
 
 	/**
 	 * Constructor.
@@ -43,7 +43,10 @@ public class View extends JFrame {
 
 		createStatusLine();
 
-		cp.add(letzespanel, BorderLayout.CENTER);
+		lastPanel = new JPanel();
+		lastPanel.add(letzespanel, BorderLayout.CENTER);
+
+		cp.add(lastPanel, BorderLayout.CENTER);
 		cp.add(statusLine, BorderLayout.SOUTH);
 
 		setproperties();
@@ -56,8 +59,9 @@ public class View extends JFrame {
 	}
 
 	private void setproperties() {
-		setSize(new Dimension(500, 700));
+		setSize(new Dimension(500, 200));
 		setVisible(true);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 
 	private void initializeButtons() {
