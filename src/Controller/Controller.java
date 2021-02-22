@@ -7,7 +7,6 @@ import View.View;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 public class Controller implements ActionListener {
     private View view;
@@ -50,7 +49,10 @@ public class Controller implements ActionListener {
                 }else{
                     // --- if exist ---
                     showData(view.getBankAccountNumber().getText());
+                    view.getDebitAmount().setEnabled(true);
                     view.getOkayButton().setText("Buchen");
+
+                    view.repaint();
                 }
 
                 System.out.println(view.getBankAccountNumber().getText());
@@ -72,7 +74,7 @@ public class Controller implements ActionListener {
      */
     public void emptyFields(){
         view.getBankAccountNumber().setText("");
-        view.getClear().setText("");
+        view.getClerk().setText("");
         view.getDebitAmount().setText("");
         view.getDebitAmount().setText("");
     }
@@ -84,6 +86,16 @@ public class Controller implements ActionListener {
      * @param bankAccountNumber must have content, and must contain correct bank account number.
      */
     public void showData(String bankAccountNumber){
-        model.getBankAccountInformation(bankAccountNumber).get(0);
+
+        setDataOnView(model.getBankAccountInformation(bankAccountNumber)[0], model.getBankAccountInformation(bankAccountNumber)[1], model.getBankAccountInformation(bankAccountNumber)[2]);
+
+    }
+
+    private void setDataOnView(String accountNumber, String clerk, String balance) {
+
+        System.out.println("test");
+        view.getBankAccountNumber().setText(accountNumber);
+        view.getClerk().setText(clerk);
+        view.getBankBalance().setText(balance);
     }
 }

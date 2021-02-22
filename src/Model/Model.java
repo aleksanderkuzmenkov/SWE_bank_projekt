@@ -36,13 +36,16 @@ public class Model {
      * @param bankAccountNumber must have content, and must contain correct bank account number.
      */
     public boolean checkIfAccountExist(String bankAccountNumber){
-        checkDepositAccount(bankAccountNumber);
         // --- check if konto number correct ---
-        if(!checkDepositAccount(bankAccountNumber) && !checkCurrentAccount(bankAccountNumber)){
-            return false;
-        }else{
+        if(checkDepositAccount(bankAccountNumber) || checkCurrentAccount(bankAccountNumber)){
+
+            System.out.println("truuuuuuu");
             return true;
         }
+
+        System.out.println("Faaaalse");
+
+        return false;
     }
 
     /**
@@ -52,13 +55,15 @@ public class Model {
      * @param bankAccountNumber must have content, and must contain correct bank account number.
      */
     private boolean checkCurrentAccount(String bankAccountNumber) {
+        boolean exist = false;
+
         for (Map.Entry<String, CurrentAccount> set : currentAccounts.entrySet()) {
-            System.out.println(set.getKey() + " = " + set.getValue());
-            if(!set.getKey().equals(bankAccountNumber)){
-                return false;
+//            System.out.println(set.getKey() + " = " + set.getValue());
+            if(set.getKey().equals(bankAccountNumber)){
+               exist = true;
             }
         }
-        return true;
+        return exist;
     }
 
     /**
@@ -68,13 +73,15 @@ public class Model {
      * @param bankAccountNumber must have content, and must contain correct bank account number.
      */
     private boolean checkDepositAccount(String bankAccountNumber) {
+
+        boolean exist = false;
+
         for (Map.Entry<String, SavingAccount> set : savingAccounts.entrySet()) {
-            System.out.println(set.getKey() + " = " + set.getValue());
-            if(!set.getKey().equals(bankAccountNumber)){
-                return false;
+            if(set.getKey().equals(bankAccountNumber)){
+                exist = true;
             }
         }
-        return true;
+        return exist;
     }
 
     /**
@@ -83,22 +90,32 @@ public class Model {
      * This method get all date of an bank account.
      * @param bankAccountNumber must have content, and must contain correct bank account number.
      */
-    public ArrayList getBankAccountInformation(String bankAccountNumber){
-        ArrayList<BankAccount> bankAccountInformation = new ArrayList();
+    public String[] getBankAccountInformation(String bankAccountNumber){
+//        ArrayList<BankAccount> bankAccountInformation = new ArrayList();
+
+        String [] bankAccountInformation = new String[3];
 
         // --- first loop for looking for searched bank account ---
         for (Map.Entry<String, CurrentAccount> set : currentAccounts.entrySet()) {
-            System.out.println(set.getKey() + " = " + set.getValue());
+
+            // --- if bank account in the list exitst ---
             if(set.getKey().equals(bankAccountNumber)){
-               bankAccountInformation.add(set.getValue());
+
+                bankAccountInformation[0] = set.getValue().getBankAccountNumber();
+                bankAccountInformation[1] = set.getValue().getClerk();
+                bankAccountInformation[2] = String.valueOf(set.getValue().getBankBalance());
+
             }
         }
 
         // --- second loop for looking for searched bank account ---
         for (Map.Entry<String, SavingAccount> set : savingAccounts.entrySet()) {
-            System.out.println(set.getKey() + " = " + set.getValue());
             if(set.getKey().equals(bankAccountNumber)){
-                bankAccountInformation.add(set.getValue());
+
+                bankAccountInformation[0] = set.getValue().getBankAccountNumber();
+                bankAccountInformation[1] = set.getValue().getClerk();
+                bankAccountInformation[2] = String.valueOf(set.getValue().getBankBalance());
+
             }
         }
 
@@ -111,15 +128,12 @@ public class Model {
      * @param bankAccountNumber must have content, and must contain correct bank account number.
      * @param clerk must have content, and must contain correct bank account number.
      * @param bankBalance must have content, and must contain correct bank account number.
-     * @param debitAmount must have content, and must contain correct bank account number.
-     * @param debitDate must have content, and must contain correct bank account number.
      */
-    public void addNewCurrentAccount(String bankAccountNumber, String clerk, double bankBalance, double debitAmount, GregorianCalendar debitDate){
+    public void addNewCurrentAccount(int bankAccountID, String bankAccountNumber, String clerk, double bankBalance){
 
-        String bankAccountId = "C" + generateBankAccountID();
-        currentAccounts.put(bankAccountId, new CurrentAccount(bankAccountNumber, "clerk", bankBalance, debitAmount, debitDate));
+        currentAccounts.put(bankAccountNumber, new CurrentAccount(bankAccountID, bankAccountNumber, "clerk", bankBalance));
 
-        writeDataToFile(bankAccountId, clerk, bankBalance, debitAmount, debitDate);
+//        writeDataToFile(bankAccountID, bankAccountNumber, clerk, bankBalance);
     }
 
     /**
@@ -129,13 +143,12 @@ public class Model {
      * @param bankAccountNumber must have content, and must contain correct bank account number.
      * @param clerk must have content, and must contain correct bank account number.
      * @param bankBalance must have content, and must contain correct bank account number.
-     * @param debitAmount must have content, and must contain correct bank account number.
-     * @param debitDate must have content, and must contain correct bank account number.
      */
-    public void addNewSavingAccount(String bankAccountNumber, String clerk, double bankBalance, double debitAmount, GregorianCalendar debitDate){
-        String bankAccountId = "C"+generateBankAccountID();
-        savingAccounts.put(bankAccountId, new SavingAccount(bankAccountNumber, clerk, bankBalance, debitAmount, debitDate));
-        writeDataToFile(bankAccountId, clerk, bankBalance, debitAmount, debitDate);
+    public void addNewSavingAccount(int bankAccountID, String bankAccountNumber, String clerk, double bankBalance){
+
+        savingAccounts.put(bankAccountNumber, new SavingAccount(bankAccountID, bankAccountNumber, clerk, bankBalance));
+
+//        writeDataToFile(id, bankAccountNumber, clerk, bankBalance);
     }
 
     /**
@@ -145,46 +158,23 @@ public class Model {
      * Bank account in file will be separate to current and Saving accounts.
      * Avery line get an lineId;
      */
-    private void writeDataToFile(String bankAccountId, String clerk, double bankBalance, double debitAmount, GregorianCalendar debitDate) {
+    private void writeDataToFile(int id, String bankAccountNumber, String clerk, double bankBalance) {
         File file = new File(FILE_NAME);
         FileWriter fr = null;
         BufferedWriter br = null;
         try {
-            //для обновления файла нужно инициализировать FileWriter с помощью этого конструктора
             fr = new FileWriter(file,true);
             br = new BufferedWriter(fr);
 
             int lineId = 1;
 
-            br.write(bankAccountId + ";");
+            br.write(id + ";");
+            br.write(bankAccountNumber + ";");
             br.write(clerk + ";");
             br.write(bankBalance + ";");
-            br.write(debitAmount + ";");
-            br.write(debitDate + ";");
+
 
             br.close();
-
-//            for (Map.Entry<String, CurrentAccount> set : currentAccounts.entrySet()) {
-//                br.write(
-//                        lineId++ + ";" +
-//                                set.getValue().getBankAccountNumber() + ";" +
-//                                set.getValue().getClerk()  + ";" +
-//                                set.getValue().getBankBalance()
-//                );
-//                br.newLine();
-//            }
-//            for (Map.Entry<String, SavingAccount> set : savingAccounts.entrySet()) {
-//                br.write(
-//                        lineId++ + ";" +
-//                                set.getValue().getBankAccountNumber() + ";" +
-//                                set.getValue().getClerk()  + ";" +
-//                                set.getValue().getBankBalance()
-//                );
-//                br.newLine();
-//            }
-//            br.close();
-
-
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -202,31 +192,27 @@ public class Model {
 
         ArrayList<Integer> idNrs = new ArrayList<>();
 
+
+
         try(BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))){
 
-            String line = reader.readLine();
+            String line = null;
 
             String test = "";
-            boolean helper = true;
-            int counter = 0;
+
+            String[] split = new String[4];
 
             while ((line = reader.readLine()) != null) {
-                while (helper) {
-                    if (!String.valueOf(line.charAt(counter)).equals(";")) {
-                        test = test + line.charAt(counter);
-                        counter++;
-                    } else {
-                        System.out.println(test);
-                        counter = 0;
-                        idNrs.add(Integer.parseInt(test));
-                        test = "";
-                        helper = false;
-                    }
-                }
-                helper = true;
+
+                split = line.split(";");
+
+                splitToBankAccountTypes(split);
+
+                idNrs.add(Integer.parseInt(split[0]));
+
             }
 
-             Collections.sort(idNrs);
+            Collections.sort(idNrs);
 
 
         } catch (FileNotFoundException e) {
@@ -237,6 +223,13 @@ public class Model {
 
         // --- TODO ---
         return idNrs.get(idNrs.size()-1);
-//        return null;
+    }
+
+    private void splitToBankAccountTypes(String[] split) {
+        if (split[1].charAt(0) == 'C'){
+            addNewCurrentAccount(Integer.parseInt(split[0]), split[1], split[2], Double.parseDouble(split[3]));
+        }else {
+            addNewSavingAccount(Integer.parseInt(split[0]), split[1], split[2], Double.parseDouble(split[3]));
+        }
     }
 }

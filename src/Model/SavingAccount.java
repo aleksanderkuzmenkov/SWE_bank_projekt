@@ -21,8 +21,8 @@ public class SavingAccount extends BankAccount {
      * @param debitAmount (required) show value of a debit. Can't be more than bank balance.
      * @param debitDate (required) date of debit. Will be automatically generated.
      */
-    public SavingAccount(String bankAccountNumber, String clerk, double bankBalance, double debitAmount, GregorianCalendar debitDate) {
-        super(bankAccountNumber, clerk, bankBalance, debitAmount, debitDate);
+    public SavingAccount(int bankAccountID, String bankAccountNumber, String clerk, double bankBalance) {
+        super(bankAccountID, bankAccountNumber, clerk, bankBalance);
     }
 
     private boolean checkIfBankBalanceNotNeganive(double bankBalance){
