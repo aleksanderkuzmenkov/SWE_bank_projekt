@@ -33,6 +33,9 @@ public abstract class BankAccount {
         this.bankBalance = bankBalance;
     }
 
+    public int getBankAccountID() {
+        return bankAccountID;
+    }
     /**
      *
      * @param debitAmount debitAmount to set
@@ -67,6 +70,10 @@ public abstract class BankAccount {
      */
     public double getBankBalance() {
         return bankBalance;
+    }
+
+    public void setBankBalance(double bankBalance) {
+        this.bankBalance = bankBalance;
     }
 
     /**

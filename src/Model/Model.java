@@ -18,15 +18,36 @@ public class Model {
     private final String FILE_NAME = "BankAccounts.txt";
 
     // --- todo ---
-    public boolean debitMoney(double amount){
+    public boolean debitMoney(String bankNumber, double amount){
 
-        return true;
+        if(bankNumber.charAt(0) == 'C'){
+            // --- is an current bank account, JUST DU IT ---
+            currentAccounts.get(bankNumber).setBankBalance(currentAccounts.get(bankNumber).getBankBalance() - amount);
+
+            rewriteBankAccountInformation();
+
+            return true;
+        }else{
+            // --- is an saving bank account. Check if enough money ----
+            if(checkAmount(amount, savingAccounts.get(bankNumber).getBankBalance())){
+                savingAccounts.get(bankNumber).setBankBalance(savingAccounts.get(bankNumber).getBankBalance() - amount);
+                rewriteBankAccountInformation();
+                // --- return error code for true ---
+                return true;
+            }else{
+                // --- return error code for error because of to large debit amount ---
+                return false;
+            }
+        }
     }
 
-    // --- todo ---
-    public boolean checkAmount(double amount){
+    public boolean checkAmount(double amount, double bankAccountBalance){
 
-        return true;
+        if(bankAccountBalance >= amount){
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -39,12 +60,8 @@ public class Model {
         // --- check if konto number correct ---
         if(checkDepositAccount(bankAccountNumber) || checkCurrentAccount(bankAccountNumber)){
 
-            System.out.println("truuuuuuu");
             return true;
         }
-
-        System.out.println("Faaaalse");
-
         return false;
     }
 
@@ -58,7 +75,6 @@ public class Model {
         boolean exist = false;
 
         for (Map.Entry<String, CurrentAccount> set : currentAccounts.entrySet()) {
-//            System.out.println(set.getKey() + " = " + set.getValue());
             if(set.getKey().equals(bankAccountNumber)){
                exist = true;
             }
@@ -81,7 +97,7 @@ public class Model {
                 exist = true;
             }
         }
-        return exist;
+        return exist ;
     }
 
     /**
@@ -158,23 +174,36 @@ public class Model {
      * Bank account in file will be separate to current and Saving accounts.
      * Avery line get an lineId;
      */
-    private void writeDataToFile(int id, String bankAccountNumber, String clerk, double bankBalance) {
+    private void rewriteBankAccountInformation() {
         File file = new File(FILE_NAME);
         FileWriter fr = null;
         BufferedWriter br = null;
+
+        int counter = 1;
+
         try {
-            fr = new FileWriter(file,true);
+            fr = new FileWriter(file,false);
             br = new BufferedWriter(fr);
 
-            int lineId = 1;
-
-            br.write(id + ";");
-            br.write(bankAccountNumber + ";");
-            br.write(clerk + ";");
-            br.write(bankBalance + ";");
-
-
-            br.close();
+        // --- first loop for looking for searched bank account ---
+        for (Map.Entry<String, CurrentAccount> set : currentAccounts.entrySet()) {
+                br.write(counter + ";");
+                br.write(set.getValue().getBankAccountNumber() + ";");
+                br.write(set.getValue().getClerk() + ";");
+                br.write(set.getValue().getBankBalance() + ";");
+                br.newLine();
+                counter++;
+        }
+        // --- second loop for looking for searched bank account ---
+        for (Map.Entry<String, SavingAccount> set : savingAccounts.entrySet()) {
+                br.write(counter + ";");
+                br.write(set.getValue().getBankAccountNumber() + ";");
+                br.write(set.getValue().getClerk() + ";");
+                br.write(set.getValue().getBankBalance() + ";");
+                br.newLine();
+                counter++;
+        }
+        br.close();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -188,17 +217,21 @@ public class Model {
         }
     }
 
+    /**
+     * Generate Bank Account ID.
+     *
+     * This method write all bank accounts information to BankAccounts.txt file.
+     * Bank account in file will be separate to current and Saving accounts.
+     * Avery line get an lineId;
+     * @return idNrs.get(idNrs.size()-1)
+     */
     public int generateBankAccountID(){
 
         ArrayList<Integer> idNrs = new ArrayList<>();
 
-
-
         try(BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))){
 
             String line = null;
-
-            String test = "";
 
             String[] split = new String[4];
 
@@ -221,7 +254,6 @@ public class Model {
             e.printStackTrace();
         }
 
-        // --- TODO ---
         return idNrs.get(idNrs.size()-1);
     }
 
@@ -232,4 +264,5 @@ public class Model {
             addNewSavingAccount(Integer.parseInt(split[0]), split[1], split[2], Double.parseDouble(split[3]));
         }
     }
+
 }

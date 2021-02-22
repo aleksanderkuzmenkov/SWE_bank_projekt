@@ -23,4 +23,5 @@ public class CurrentAccount extends BankAccount {
     public CurrentAccount(int bankAccountID, String bankAccountNumber, String clerk, double bankBalance) {
         super(bankAccountID, bankAccountNumber, clerk, bankBalance);
     }
+
 }
