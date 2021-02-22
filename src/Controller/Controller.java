@@ -36,7 +36,8 @@ public class Controller implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals(view.getOkayButton().getActionCommand())){
+        boolean clickCounter = false;
+        if (e.getActionCommand().equals(view.getOkayButton().getActionCommand()) && !clickCounter){
             if(view.getBankAccountNumber().getText().equals("")){
                 view.getBankAccountNumber().setBackground(Color.RED);
                 view.getStatusLine().setText("Geben Sie die Kontonummer ein!");
@@ -47,15 +48,27 @@ public class Controller implements ActionListener {
                     view.getBankAccountNumber().setBackground(Color.RED);
                     view.getStatusLine().setText("Die Kontonummer ist falsch!");
                 }else{
-                    // --- if exist ---
-                    showData(view.getBankAccountNumber().getText());
-                    view.getDebitAmount().setEnabled(true);
-                    view.getOkayButton().setText("Buchen");
+                    clickCounter = true;
 
-                    view.repaint();
+                    System.out.println("1.///");
+                        // --- if exist ---
+                        showData(view.getBankAccountNumber().getText());
+                        view.getDebitAmount().setEditable(true);
+                        view.getOkayButton().setText("Buchen");
+
+                    if(e.getActionCommand().equals(view.getOkayButton().getActionCommand()) && clickCounter){
+                        if(!view.getDebitAmount().getText().equals("")) {
+                            if(model.debitMoney(view.getBankAccountNumber().getText(), Double.parseDouble(view.getDebitAmount().getText()))){
+                                view.getStatusLine().setText("Betrag wird gebucht");
+                            }else {
+                                view.getStatusLine().setText("Falsches Betrag");
+                            }
+                        }else {
+                            view.getStatusLine().setText("Buchungsbetrag darf nicht lehr sein!");
+                        }
+                    }
+
                 }
-
-                System.out.println(view.getBankAccountNumber().getText());
                 view.getBankAccountNumber().setBackground(Color.WHITE);
                 view.getStatusLine().setText("");
             }
@@ -76,7 +89,8 @@ public class Controller implements ActionListener {
         view.getBankAccountNumber().setText("");
         view.getClerk().setText("");
         view.getDebitAmount().setText("");
-        view.getDebitAmount().setText("");
+        view.getBankBalance().setText("");
+
     }
 
     /**
@@ -92,8 +106,6 @@ public class Controller implements ActionListener {
     }
 
     private void setDataOnView(String accountNumber, String clerk, String balance) {
-
-        System.out.println("test");
         view.getBankAccountNumber().setText(accountNumber);
         view.getClerk().setText(clerk);
         view.getBankBalance().setText(balance);
